@@ -1,0 +1,31 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.dll": true,
+    "**/*.pdb": true
+  },
+  "csharp.referencesCodeLens.enabled": false,
+  "launch": {
+    "configurations": [
+      {
+        "name": "Attach to Rhino/Grasshopper",
+        "type": "clr",
+        "request": "attach",
+        "processId": "${command:pickProcess}",
+        "requireExactSource": false,
+        "justMyCode": true,
+        "symbolOptions": {
+          "searchPaths": [
+            "${workspaceFolder}"
+          ],
+          "searchMicrosoftSymbolServer": false
+        }
+      }
+    ],
+    "compounds": []
+  }
+}

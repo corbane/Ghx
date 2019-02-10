@@ -1,0 +1,31 @@
+{
+	"name": "rhcode",
+	"displayName": "Rhino Code",
+	"version": "0.0.1",
+	"description": "",
+	"author": {
+		"name": "Vrecq Jean-marie"
+	},
+	"publisher": "jmvrecq",
+	"engines": {
+		"vscode": "^1.30.0"
+	},
+	"private": true,
+	"categories": ["Debuggers"],
+	"activationEvents": ["onDebug"],
+	"main": "./out/extension.js",
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28",
+		"tslint": "^5.12.1",
+		"@types/node": "^8.10.25",
+		"@types/mocha": "^2.2.42"
+	}
+}
