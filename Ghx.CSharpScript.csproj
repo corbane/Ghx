@@ -212,6 +212,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="doc\images\comp_tab.png" />
+    <Content Include="doc\images\empty.png" />
+    <Content Include="doc\images\extensions_vscode.JPG" />
     <Content Include="doc\images\screenshot.png" />
     <Content Include="Editor\extensions\RhinoCode\out\extension.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

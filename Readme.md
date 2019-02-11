@@ -83,7 +83,7 @@ When using for the first time, only one extension must be installed.
 
 Install the [c# extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) in this instance. you lust have two extensions enabled:
 
-![](doc/images/extensions_vscode.jpg)
+![](doc/images/extensions_vscode.JPG)
 
 The `Rhino Code` plugin is in this repository under the `editor` folder.
 
