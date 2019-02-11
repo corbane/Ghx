@@ -26,8 +26,8 @@ namespace Ghx.RoslynScript
             var installDirectory = Path.GetDirectoryName (Assembly.GetExecutingAssembly ().Location);
             var sourceDirectory = Path.GetDirectoryName(sourcePath);
 
-            var args = $"--user-data-dir \"{installDirectory}/editor/data\" "
-                        + $"--extensions-dir \"{installDirectory}/editor/extensions\" "
+            var args = $"--user-data-dir \"{installDirectory}/Editor/data\" "
+                        + $"--extensions-dir \"{installDirectory}/Editor/extensions\" "
                         + (IsOpen ? " -r " : "")
                         + $"\"{sourceDirectory}\" -g \"{sourcePath}:0\" ";
 
@@ -55,7 +55,7 @@ namespace Ghx.RoslynScript
 
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             File.Copy(
-                Path.Combine(Path.GetDirectoryName(assemblyLocation), "editor/template.csx"),
+                Path.Combine(Path.GetDirectoryName(assemblyLocation), "Editor/template.csx"),
                 path
             );
         }
