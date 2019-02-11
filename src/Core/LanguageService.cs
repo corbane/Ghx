@@ -51,8 +51,9 @@ namespace Ghx.RoslynScript
                 var assemblyName = Path.GetFileNameWithoutExtension(sourcePath);
                 var dllPath = Path.Combine(directory, assemblyName + ".dll");
 
-                if (File.Exists (dllPath) &&
-                    File.GetLastWriteTime(sourcePath) <= File.GetLastWriteTime(dllPath))
+                var finfo = new FileInfo(dllPath);
+                if (finfo.Exists && finfo.Length > 0 &&
+                    File.GetLastWriteTime(sourcePath) <= finfo.LastWriteTime)
                 {
                     result.AssemblyLocation = dllPath;
                     return result;
@@ -150,7 +151,7 @@ namespace Ghx.RoslynScript
 
                     if (!r.Success)
                     {
-                        result.Error = String.Join("\n", from d in tree.GetDiagnostics()
+                        result.Error = String.Join("\n", from d in r.Diagnostics
                                                               select $"{d.GetMessage()} ({d.Location.GetLineSpan()})");
                         return result;
                     }

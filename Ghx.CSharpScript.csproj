@@ -19,6 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -165,18 +166,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Editor\extensions\RhinoCode\out\extension.js.map">
+    <None Include="editor\extensions\RhinoCode\out\extension.js.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Editor\extensions\RhinoCode\package.json">
+    <None Include="editor\extensions\RhinoCode\package.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Editor\extensions\RhinoCode\README.md" />
-    <None Include="Editor\data\User\settings.json">
+    <None Include="editor\data\User\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Readme.md" />
+    <None Include="test\input_output\input_output.csx" />
+    <None Include="test\input_output\input_output.gh" />
+    <None Include="test\input_output\libs.csx" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="packages\Microsoft.CodeAnalysis.Analyzers.2.6.1\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
@@ -193,7 +196,7 @@
     <Compile Include="src\Core\Interfaces.cs" />
     <Compile Include="src\Core\LanguageService.cs" />
     <Compile Include="src\Core\Script.cs" />
-    <None Include="Editor\template.csx">
+    <None Include="editor\template.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="src\RoslynScriptInfo.cs" />
@@ -210,10 +213,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="doc\images\screenshot.png" />
-    <Content Include="Editor\extensions\RhinoCode\out\extension.js">
+    <Content Include="editor\extensions\RhinoCode\out\extension.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

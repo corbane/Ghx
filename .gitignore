@@ -17,3 +17,5 @@ packages/
 /Editor/extensions/RhinoCode/node_modules
 /.vs
 /Editor/extensions/RhinoCode/out/test
+/test/input_output/input_output.dll
+/test/input_output/input_output.pdb
