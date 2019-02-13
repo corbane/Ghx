@@ -20,9 +20,3 @@ if( !(Datas is IEnumerable) )
 
 [Output ("R", "result")]
 var result = Datas;
-
-// CompilationExeption
-// CastExeption (InputCastExeption, OutputCastExeption)
-// ExecutorExeption
-// ScriptExeption
-// ComponentExeption

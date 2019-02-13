@@ -8,7 +8,7 @@
 - Auto compile a csx files
 - Auto update inputs/outputs
 - Live debugging with vscode/omnisharp
-  (LThe debugger does not reload Rhino and Grasshopper at each compilation, just save the source file)
+  (The debugger does not reload Rhino and Grasshopper at each compilation, just save the source file)
 
 ![scrennshot](doc/images/screenshot.png)
 
@@ -21,13 +21,10 @@ For live debugging:
 ## Currently / Known Issues
 
 - Currently is not supported on MacOS (but it's possible)
-- Not tested with List and Data Tree access
+- Not tested with Data Tree access
 - The debugger must be detached to compile the source
 - Derived types are not implemented (eg. `class CustomMesh : Mesh {}`)
-- The order of the inputs is not the same as that of the source
 - If the name of the field (eg. `myVar`) change (->`MyVar`) the grah links are lost
-- If an output is deleted in the source code the connected components inputs is not updated
-- The order of the outputs is not the same as that of the source
 
 ## Install / Use
 
@@ -37,9 +34,9 @@ After installing vscode and compiling the sources, you must have the component u
 
 At first, you have an empty component
 
-![](doc/images/empty.png)
+Select `Source...` in the component pop-up menu or double-click on the component. A dialog box appear then select a Roslyn script (`*.csx`) or enter a new name.
 
-Select `Source...` and select a Roslyn script (`*.csx`) or type a new name.
+![](doc/images/empty.png)
 
 You must see two files in the target directory
 
@@ -72,7 +69,7 @@ var interval = new Interval (min, max);
 var box = new Box (plane, interval, interval, interval);
 ```
 
-For debugging, select `Debug...` from the component's context menu.
+For debugging, select `Debug...` in the component pop-up menu or double-click on the component again.
 
 Visual Studio Code must start and load your script.
 

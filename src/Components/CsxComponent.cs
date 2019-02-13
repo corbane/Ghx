@@ -16,18 +16,6 @@ namespace Ghx.RoslynScript
 {
     public partial class CsxComponent
     {
-        // Call stack:
-        // -- Open GH
-        // Constructor
-        // Constructor
-        // -- GH is open
-        // -- Open definition
-        // Constructor
-        // Read
-        // AddedToDocument
-        // SolveInstance
-        // -- Definition is loaded
-        
         public string SourceUri { get; private set; } = null;
 
         /// <summary>

@@ -4,22 +4,11 @@
 Source note:
     The debugger must be detached to compile the source
     Derived types are not implemented (eg. `class CustomMesh : Mesh {}`)
-
-- CollectVolatileData_FromSources
-- PostProcessData
-- OnVolatileDataCollected
-- PostProcessData
-- OnVolatileDataCollected
 */
 
 using System;
 using Rhino.Geometry;
 using Ghx.RoslynScript;
-
-/*
-Inputs note:
-    The order of the inputs is not the same as that of the source
-*/
 
 [Input ("B", "Boolean")]
 bool tBool;
@@ -110,8 +99,6 @@ class CustomMesh : Mesh
 /*
 Outputs note:
     If the name of the field (eg. "OBollean") change the grah links are lost
-    If an output is deleted in the source code the connected components input is not updated
-    The order of the outputs is not the same as that of the source
 */
 
 [Output ("OBool", "Boolean output")]
