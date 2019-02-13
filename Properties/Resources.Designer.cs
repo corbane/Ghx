@@ -69,5 +69,15 @@ namespace Ghx.RoslynScript.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ico_var_x {
+            get {
+                object obj = ResourceManager.GetObject("ico_var_x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

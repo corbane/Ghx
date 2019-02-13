@@ -2,7 +2,7 @@
 
 namespace Ghx.RoslynScript
 {
-    public interface IOAttribute
+    public interface ICsxAttribute
     {
         string NickName { get; }
         string Description { get; }
@@ -10,14 +10,16 @@ namespace Ghx.RoslynScript
     }
 
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class Input : Attribute, IOAttribute
+    public class Input : Attribute, ICsxAttribute
     {
         public string NickName { get; set; }
 
         public string Description { get; set; }
 
         public object DefaultValue { get; set; }
-        
+
+        //fromGH
+         
         public Input(string nickname, string description = "", object defaultValue = null)
         {
             NickName = nickname;
@@ -27,13 +29,15 @@ namespace Ghx.RoslynScript
     }
     
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class Output : Attribute, IOAttribute
+    public class Output : Attribute, ICsxAttribute
     {
         public string NickName { get; set; }
 
         public string Description { get; set; }
 
         public object DefaultValue { get; set; }
+
+        //toGH
 
         public Output(string nickname, string description = "", object defaultValue = null)
         {

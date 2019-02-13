@@ -4,6 +4,12 @@
 Source note:
     The debugger must be detached to compile the source
     Derived types are not implemented (eg. `class CustomMesh : Mesh {}`)
+
+- CollectVolatileData_FromSources
+- PostProcessData
+- OnVolatileDataCollected
+- PostProcessData
+- OnVolatileDataCollected
 */
 
 using System;
@@ -94,6 +100,9 @@ class CustomMesh : Mesh
 //[Input ("CM", "Custom Mesh")]
 //CustomMesh tCustomMesh;
 
+//[Output ("OCustomMesh", "Custom Mesh output")]
+//var OCustomMesh = new CustomMesh ();
+
 //
 // Test outputs
 //
@@ -101,7 +110,7 @@ class CustomMesh : Mesh
 /*
 Outputs note:
     If the name of the field (eg. "OBollean") change the grah links are lost
-    If an output is deleted, the connected components input is not updated
+    If an output is deleted in the source code the connected components input is not updated
     The order of the outputs is not the same as that of the source
 */
 
@@ -167,11 +176,10 @@ var OPolyline = new Polyline (new [] { new Point3d (0, 0, 0), new Point3d (10, 1
 var OCurv = OPolyline;
 
 [Output ("OSurf", "Surface output")]
-var OSurface = tBrep.Faces[0];
+Surface OSurface;
+
+OSurface = tBrep.Faces[0];
 
 [Output ("OBrep", "Brep output")]
 var OBrep = OSurface;
-
-[Output ("OMesh", "Mesh output")]
-var OMesh = tMesh;
 

@@ -177,6 +177,9 @@
     </None>
     <None Include="packages.config" />
     <None Include="Readme.md" />
+    <None Include="test\extended_type\extended_type.csx" />
+    <None Include="test\extended_type\extended_type.gh" />
+    <None Include="test\extended_type\libs.csx" />
     <None Include="test\input_output\input_output.csx" />
     <None Include="test\input_output\input_output.gh" />
     <None Include="test\input_output\libs.csx" />
@@ -192,10 +195,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="src\Components\RoslynScriptComponent.cs" />
+    <Compile Include="src\Components\CsxComponent.cs" />
+    <Compile Include="src\Components\CsxParametersSide.cs" />
+    <Compile Include="src\Components\CsxComponent_overrides.cs" />
+    <Compile Include="src\Components\CsxParameter.cs" />
+    <Compile Include="src\Core\CsxMap.cs" />
+    <Compile Include="src\Core\Exceptions.cs" />
     <Compile Include="src\Core\Interfaces.cs" />
     <Compile Include="src\Core\LanguageService.cs" />
     <Compile Include="src\Core\Script.cs" />
+    <None Include="test\TestConnector.cs" />
     <None Include="Editor\template.csx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -219,6 +228,7 @@
     <Content Include="Editor\extensions\RhinoCode\out\extension.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="icos\ico_var_x.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />

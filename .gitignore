@@ -19,3 +19,14 @@ packages/
 /Editor/extensions/RhinoCode/out/test
 /test/input_output/input_output.dll
 /test/input_output/input_output.pdb
+/icos/Grasshopper_Icon_Set
+/test/extended_type/extended_type.dll
+/test/extended_type/extended_type.gh
+/test/extended_type/extended_type.pdb
+/test/input_output/sort_parameters.pdb
+/test/input_output/sort_parameters.dll
+/test/input_output/list_access.pdb
+/test/input_output/list_access.dll
+/test/input_output/brep.pdb
+/test/input_output/brep.dll
+/test/TestConnector.cs

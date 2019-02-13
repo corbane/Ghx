@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -8,9 +6,36 @@ using System.Collections.Generic;
 
 namespace Ghx.RoslynScript
 {
-    public class Script
+    public interface ICsxScript
     {
-        private static Dictionary <string, Assembly> m_loadeduri = new Dictionary<string, Assembly> ();
+        bool IsValid { get; }
+        object Instance { get; }
+        string Uri { get; }
+        List<CsxField> Inputs { get; }
+        List<CsxField> Outputs { get; }
+
+        event CsxScript.OnUpdatedHandler OnUpdated;
+
+        void DefineSource(string uri);
+        Task<object> Run(object[] values = null);
+    }
+
+    public class CsxField
+    {
+        public readonly FieldInfo Info;
+        public readonly ICsxAttribute Attribute;
+        public readonly ICsxScript Script;
+        public CsxField(FieldInfo info, ICsxAttribute attr, ICsxScript script)
+        {
+            Info = info;
+            Attribute = attr;
+            Script = script;
+        }
+    }
+
+    public class CsxScript : ICsxScript
+    {
+        //private static Dictionary <string, Assembly> m_loadeduri = new Dictionary<string, Assembly> ();
 
         private Assembly m_assembly;
 
@@ -36,13 +61,13 @@ namespace Ghx.RoslynScript
 
         public string Uri { get; private set; }
 
-        private FieldInfo[] m_inputs;
+        private List<CsxField> m_inputs = new List<CsxField> ();
 
-        private FieldInfo[] m_outputs;
+        private List<CsxField> m_outputs = new List<CsxField> ();
 
-        public ImmutableArray<FieldInfo> Inputs => m_inputs.ToImmutableArray();
+        public List<CsxField> Inputs => m_inputs;
 
-        public ImmutableArray<FieldInfo> Outputs => m_outputs.ToImmutableArray();
+        public List<CsxField> Outputs => m_outputs;
 
         public delegate void OnUpdatedHandler();
 
@@ -67,30 +92,17 @@ namespace Ghx.RoslynScript
                 return;
             }
 
-            if(result.IsNewAssembly)
-            {
-                if(m_loadeduri.ContainsKey(Uri))
-                    m_loadeduri[Uri] = Assembly.Load(File.ReadAllBytes(result.AssemblyLocation));
-                else
-                    m_loadeduri.Add(Uri, Assembly.Load(File.ReadAllBytes(result.AssemblyLocation)));
-            }
-            else if(!m_loadeduri.ContainsKey(Uri))
-            {
-                m_loadeduri.Add(Uri, Assembly.Load(File.ReadAllBytes(result.AssemblyLocation)));
-            }
-            else
-            {
+            if(result.Assembly == null)
                 return;
-            }
 
             m_assembly = null;
             m_ctor = null;
             m_entrypoint = null;
             m_program = null;
-            //m_inputs = new FieldInfo[] { };
-            //m_outputs = new FieldInfo[] { };
+            m_inputs.Clear();
+            m_outputs.Clear();
 
-            m_assembly = m_loadeduri[Uri];
+            m_assembly = result.Assembly;
 
             var cls = (from t in m_assembly.GetExportedTypes()
                            where t.IsClass && t.Name == "Program"
@@ -118,13 +130,15 @@ namespace Ghx.RoslynScript
                 return;
             }
 
-            m_outputs = (from field in cls.GetFields()
-                         where field.GetCustomAttribute(typeof(Output)) != null
-                         select field).ToArray();
+            m_outputs.AddRange(from field in cls.GetFields()
+                               let attr = field.GetCustomAttribute(typeof(Output))
+                               where attr != null
+                               select new CsxField (field, attr as ICsxAttribute, this));
 
-            m_inputs = (from field in cls.GetFields()
-                        where field.GetCustomAttribute(typeof(Input)) != null
-                        select field).ToArray();
+            m_inputs.AddRange (from field in cls.GetFields()
+                               let attr = field.GetCustomAttribute(typeof(Input))
+                               where attr != null
+                               select new CsxField (field, attr as ICsxAttribute, this));
 
             OnUpdated?.Invoke();
         }

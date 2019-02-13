@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Ghx.RoslynScript
@@ -18,12 +19,13 @@ namespace Ghx.RoslynScript
 
         public static Exception Exeception { get; private set; }
 
+        private static Dictionary<string, Assembly> s_assemblies = new Dictionary<string, Assembly>();
 
         public struct CompilationResult
         {
             public string Error { get; internal set; }
             public string AssemblyLocation { get; internal set; }
-            public bool IsNewAssembly { get; internal set; }
+            public Assembly Assembly { get; internal set; }
         }
         
 
@@ -33,7 +35,7 @@ namespace Ghx.RoslynScript
             {
                 Error = null,
                 AssemblyLocation = null,
-                IsNewAssembly = false
+                Assembly = null
             };
 
             try
@@ -55,11 +57,17 @@ namespace Ghx.RoslynScript
                 if (finfo.Exists && finfo.Length > 0 &&
                     File.GetLastWriteTime(sourcePath) <= finfo.LastWriteTime)
                 {
+                    if (!s_assemblies.ContainsKey(sourcePath))
+                        s_assemblies.Add(sourcePath, Assembly.Load(File.ReadAllBytes(dllPath)));
+
+                    result.Assembly = s_assemblies[sourcePath];
                     result.AssemblyLocation = dllPath;
                     return result;
                 }
 
-            // ParseSyntaxTree
+                //
+                // ParseSyntaxTree
+                //
 
                 var code = File.ReadAllText(sourcePath);
 
@@ -77,7 +85,9 @@ namespace Ghx.RoslynScript
                     return result;
                 }
 
-            // CreateScriptCompilation
+                //
+                // CreateScriptCompilation
+                //
 
                 if (!Environment.Is64BitProcess)
                 {
@@ -134,19 +144,24 @@ namespace Ghx.RoslynScript
                         MetadataReference.CreateFromFile (Path.Combine(stdPath, "System.Runtime.dll"))
                     };
                 }
-                
-            // EmitAssembly
-                
+
+                //
+                // EmitAssembly
+                //
+
                 var pdbPath = Path.Combine(directory, assemblyName + ".pdb");
                 var xmlPath = Path.Combine(directory, assemblyName + ".xml");
 
                 var options = new EmitOptions(
                     debugInformationFormat: DebugInformationFormat.PortablePdb
                 );
-
+                
                 using (var modFs = new FileStream(dllPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.Asynchronous))
                 using (var pdbFs = new FileStream(pdbPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.Asynchronous))
                 {
+                    // Can be changed with MemoryStream
+                    // And save the assembly files with the GH_Document in same directory
+
                     EmitResult r = compilation.Emit(modFs, pdbFs, options: options);
 
                     if (!r.Success)
@@ -155,12 +170,18 @@ namespace Ghx.RoslynScript
                                                               select $"{d.GetMessage()} ({d.Location.GetLineSpan()})");
                         return result;
                     }
-
-                    result.AssemblyLocation = dllPath;
-                    result.IsNewAssembly = true;
-
-                    return result;
                 }
+
+                result.Assembly = Assembly.Load(File.ReadAllBytes(dllPath));
+
+                if (!s_assemblies.ContainsKey(sourcePath))
+                    s_assemblies.Add(sourcePath, result.Assembly);
+                else
+                    s_assemblies[sourcePath] = result.Assembly;
+
+                result.AssemblyLocation = dllPath;
+
+                return result;
             }
             catch (Exception e)
             {
