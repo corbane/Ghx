@@ -22,7 +22,6 @@ For live debugging:
 
 - Currently is not supported on MacOS (but it's possible)
 - Not tested with Data Tree access
-- The debugger must be detached to compile the source
 - Derived types are not implemented (eg. `class CustomMesh : Mesh {}`)
 - If the name of the field (eg. `myVar`) change (->`MyVar`) the grah links are lost
 
@@ -84,6 +83,8 @@ Install the [c# extension](https://marketplace.visualstudio.com/items?itemName=m
 
 The `Rhino Code` plugin is in this repository under the `editor` folder.
 
-now, define a breakpoint and press F5.
+now, define a breakpoint and press F5 or F4.
 
 > If the Rhino process is not found, a selection box asks you to select it.
+
+The F4 key is an auto reload shortcut. it stops the debugger, waits for a delay for compilation of the source (for example: 1s) and automatically restarts the debugger.

@@ -166,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Editor\extensions\RhinoCode\.vscode\launch.json" />
+    <None Include="Editor\extensions\RhinoCode\.vscode\settings.json" />
+    <None Include="Editor\extensions\RhinoCode\.vscode\tasks.json" />
     <None Include="Editor\extensions\RhinoCode\out\extension.js.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -175,6 +178,7 @@
     <None Include="Editor\data\User\settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Editor\extensions\RhinoCode\tsconfig.json" />
     <None Include="packages.config" />
     <None Include="Readme.md" />
     <None Include="test\extended_type\extended_type.csx" />
@@ -230,7 +234,9 @@
     </Content>
     <None Include="icos\ico_var_x.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="Editor\extensions\RhinoCode\src\extension.ts" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

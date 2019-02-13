@@ -24,6 +24,21 @@ function activate(context) {
     me.extensionPath = context.extensionPath;
     me.storagePath = context.storagePath || context.extensionPath;
     context.subscriptions.push(vs.debug.registerDebugConfigurationProvider("clr", new RhinoConfigurationProvider()));
+    context.subscriptions.push(vs.commands.registerCommand('extension.rhcode.reloadDebugger', () => {
+        // { "key": "f4", "command": "extension.rhcode.reloadDebugger" }
+        if (vs.debug.activeDebugSession == undefined) {
+            vs.commands.executeCommand("workbench.action.debug.start");
+        }
+        else {
+            vs.commands.executeCommand("workbench.action.debug.stop")
+                .then(() => {
+                vs.commands.executeCommand("workbench.action.files.saveAll")
+                    .then(() => {
+                    setTimeout(() => vs.commands.executeCommand("workbench.action.debug.start"), 1000);
+                });
+            });
+        }
+    }));
 }
 exports.activate = activate;
 class RhinoConfigurationProvider {
