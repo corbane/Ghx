@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using Rhino;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -28,6 +29,7 @@ namespace Ghx.RoslynScript
             public Assembly Assembly { get; internal set; }
         }
         
+        public static long s_target_process_size = Process.GetCurrentProcess().WorkingSet64 * 2;
 
         public static CompilationResult Create(string sourcePath, bool watch = false, OnRecompiledHandler callback = null)
         {
@@ -58,7 +60,10 @@ namespace Ghx.RoslynScript
                     File.GetLastWriteTime(sourcePath) <= finfo.LastWriteTime)
                 {
                     if (!s_assemblies.ContainsKey(sourcePath))
+                    {
                         s_assemblies.Add(sourcePath, Assembly.Load(File.ReadAllBytes(dllPath)));
+                        VerifyMemoryUsage();
+                    }
 
                     result.Assembly = s_assemblies[sourcePath];
                     result.AssemblyLocation = dllPath;
@@ -97,7 +102,7 @@ namespace Ghx.RoslynScript
 
                 var compilationOptions = new CSharpCompilationOptions(
                     outputKind: OutputKind.DynamicallyLinkedLibrary,
-                    scriptClassName: "Program",
+                    scriptClassName: Pascalize(assemblyName) + ".Program",
                     usings: null,
                     optimizationLevel: OptimizationLevel.Debug,
                     platform: Platform.X64,
@@ -181,7 +186,67 @@ namespace Ghx.RoslynScript
 
                 result.AssemblyLocation = dllPath;
 
+                VerifyMemoryUsage();
+
                 return result;
+
+                void VerifyMemoryUsage ()
+                {
+                    var size = Process.GetCurrentProcess().WorkingSet64;
+                    if( size > s_target_process_size )
+                    {
+                        //TODO: Alert user to reload Rhino
+                    }
+                }
+
+                string Pascalize(string str)
+                {
+                    var r = new StringBuilder(str.Length);
+                    var i = 0;
+                    var chars = str.ToCharArray();
+
+                    for(; i != chars.Length; ++i)
+                    {
+                        var c = chars[i];
+
+                        if (!Char.IsLetter(c))
+                            continue;
+
+                        if (Char.IsUpper(c))
+                            r.Append(c);
+                        else
+                            r.Append(Char.ToUpper (c));
+                        break;
+                    }
+
+                    var needupper = false;
+
+                    for (++i; i != chars.Length; ++i)
+                    {
+                        var c = chars[i];
+
+                        if (!Char.IsLetterOrDigit(c))
+                        {
+                            needupper = true;
+                        }
+                        else if (Char.IsUpper(c))
+                        {
+                            needupper = false;
+                            r.Append(c);
+                        }
+                        else if(needupper)
+                        {
+                            needupper = false;
+                            r.Append(Char.ToUpper(c));
+                        }
+                        else
+                        {
+                            r.Append(c);
+                        }
+                    }
+
+                    return r.ToString();
+                }
             }
             catch (Exception e)
             {
